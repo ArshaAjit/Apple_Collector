@@ -1,5 +1,9 @@
 const NUM_BUSHES =50
 const NUM_BALLS =5
+const NUM_TREE=7
+const NUM_ROTTEN=10
+
+var score = 0
 
 const player = document.querySelector('.player')
 const player_pos = {
@@ -12,24 +16,38 @@ const player_vel ={
 
 }
 const balls = []
-const sound = new Audio('assets/coin.mp3')
+const rots = []
 
+const sound = new Audio('assets/bite.mp3')
+const rotsound = new Audio('assets/coin.mp3')
 
 function createBushes(){
     for(let i=0;i<NUM_BUSHES;i++){
         const div=document.createElement('div')
         div.classList.add('bush')
-        div.style.left = Math.random() * 100 + '%'
-        div.style.top = Math.random() * 100 + '%'
+        div.style.left = Math.random() * 80 + '%'
+        div.style.right = Math.random() * 80 + '%'
+        div.style.top = Math.random() * 80 + '%'
+        document.body.appendChild(div)
+    }
+}
+
+function createTree(){
+    for(let i=0;i<NUM_TREE;i++){
+        const div=document.createElement('div')
+        div.classList.add('tree')
+        div.style.left = Math.random() * 80 + '%'
+        div.style.right = Math.random() * 80 + '%'
+        div.style.top = Math.random() * 80 + '%'
         document.body.appendChild(div)
     }
 }
 
 function generateBall(){
     const div = document.createElement('div')
-    div.classList.add('pokeball')
-    let x = Math.random() * 100 + '%'
-    let y = Math.random() * 100 + '%'
+    div.classList.add('apple')
+    let x = Math.random() * 80 + '%'
+    let y = Math.random() * 80 + '%'
     div.style.left = x
     div.style.top = y
     balls.push({
@@ -45,6 +63,29 @@ function generateBall(){
 function createBalls(){
     for(i=0;i<NUM_BALLS;i++){
        generateBall()
+    }
+}
+
+function generateRotten(){
+    const div = document.createElement('div')
+    div.classList.add('rotten')
+    let x = Math.random() * 80 + '%'
+    let y = Math.random() * 80 + '%'
+    div.style.left = x
+    div.style.top = y
+    rots.push({
+        rot: div,
+        pos: {
+            x,
+            y
+        }
+    })
+    document.body.appendChild(div)
+}
+
+function createRotten(){
+    for(i=0;i<NUM_ROTTEN;i++){
+        generateRotten()
     }
 }
 
@@ -72,10 +113,31 @@ function checkCollisions(){
         if(collision(ball.ball, player)){
             sound.play()
             ball.ball.remove()
+            updateScore()
             generateBall()
         }
     })
 }
+
+function checkRotCollisions(){
+    rots.forEach(rot => {
+        if(collision(rot.rot, player)){
+            rotsound.play()
+            rot.rot.remove()
+            generateRotten()
+            displayGameover() 
+        }
+    })
+}
+
+function updateScore(){
+    score+=1
+    scoreCont.innerHTML = "Your Score: " + score
+}
+ function displayGameover(){
+    window.alert("Gameover..... You got " + score +" apples" );
+    window.location.reload();
+ }
 
 function run(){
     player_pos.x += player_vel.x
@@ -85,6 +147,7 @@ function run(){
     player.style.bottom=player_pos.y +'px'
 
     checkCollisions()
+    checkRotCollisions()
 
     requestAnimationFrame(run)
 }
@@ -92,6 +155,9 @@ function run(){
 function init(){
     createBushes()
     createBalls()
+    createTree()
+    createRotten()
+
     run()
 }
 init()
@@ -120,3 +186,6 @@ window.addEventListener('keyup', function(){
     player_vel.y = 0
     player.classList.remove('active')
 })
+
+
+

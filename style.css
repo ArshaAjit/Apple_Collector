@@ -1,5 +1,15 @@
+*{
+    margin:0;
+    padding:0;
+}
 body{
     background-image: url("assets/land.png");
+    width:100%;
+    height:100%;
+}
+h1,h2{
+    text-align:center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .player{
@@ -35,11 +45,32 @@ body{
     position: fixed;
     z-index: -1;
 }
-
-.pokeball{
-    width: 30px;
-    height: 30px;
-    background-image: url("assets/pokeball.png");
+.tree{
+    width: 150px;
+    height: 150px;
+    background-image: url("assets/tree.png");
     background-size: 100% 100%;
     position: fixed;
+    z-index: -1;
+}
+.apple{
+    width: 60px;
+    height: 60px;
+    background-image: url("assets/apple.png");
+    background-size: 100% 100%;
+    position: fixed;
+}
+
+.rotten{
+    width: 60px;
+    height: 60px;
+    background-image: url("assets/rotten.png");
+    background-size: 100% 100%;
+    position: fixed;
+}
+
+.score{
+    text-align: center;
+    font-size: large;
+    font-weight: 1000;
 }
